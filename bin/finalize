@@ -12,16 +12,5 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 DEPS_DIR=$3/$4
 
-echo "Running Supply Script of custom buildpack"
+echo "Running Finalize Script of Hugo buildpack"
 
-# Move needed files to the working directory
-cp $BUILDPACK_DIR/app.js .
-cp $BUILD_DIR/function.js .
-cp $BUILD_DIR/package.json .
-cp $BUILD_DIR/package-lock.json .
-
-# Add node bin as PATH for running npm below.
-export PATH=$DEPS_DIR/node/bin:$PATH
-
-# Install any npm dependencies specified
-npm install 

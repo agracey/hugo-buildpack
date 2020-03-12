@@ -10,16 +10,23 @@
 # - BUILD_DIR is 
 # 
 ###
-echo "Running Supply Script of custom buildpack"
+echo "Running Supply Script of hugo buildpack"
 
-export BUILDPACK_DIR=`dirname $(readlink -f ${BASH_SOURCE%/*})`
+HUGO_VERSION="0.67.0"
+URL="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz"
+
+BUILDPACK_DIR=`dirname $(readlink -f ${BASH_SOURCE%/*})`
 BUILD_DIR=$1
 CACHE_DIR=$2
 DEPS_DIR=$3/$4
 
-curl https://nodejs.org/download/release/v12.5.0/node-v12.5.0-linux-x64.tar.gz > $CACHE_DIR/node.tgz
+if [ ! -f $CACHE_DIR/hugo ]; then
+  curl -L $URL > $CACHE_DIR/hugo.tgz
+  tar -xzf $CACHE_DIR/hugo.tgz -C $CACHE_DIR/
+  chmod +x $CACHE_DIR/hugo
+fi
 
-tar -xzf $CACHE_DIR/node.tgz -C $CACHE_DIR/
-cp -r $CACHE_DIR/node-v12.5.0-linux-x64 $DEPS_DIR/node
+# run hugo
+pushd $BUILD_DIR && $CACHE_DIR/hugo -D && popd 
 
 exit 0

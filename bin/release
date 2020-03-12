@@ -1,4 +1,3 @@
 #!/bin/bash
-
-echo "default_process_types:"
-echo "  web: ../deps/0/node/bin/node app.js" 
+# Shouldn't be last in line
+exit 0
